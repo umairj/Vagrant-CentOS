@@ -26,3 +26,31 @@
     name: httpd
     state: started
     enabled: true
+
+- name: Install Remi Repo
+  become: true
+  yum:
+    name: "http://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
+    state: present
+
+- name: Import Remi GPG Key
+  become: true
+  rpm_key:
+    key: "http://rpms.remirepo.net/RPM-GPG-KEY-remi"
+    state: present
+
+- name: Install PHP 7.2
+  become: true
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - php72-php
+      - php72-php-fpm
+      - php72-php-mysqlnd
+      - php72-php-opcache
+      - php72-php-xml
+      - php72-php-gd
+      - php72-php-mbstring
+      - php72-php-json
