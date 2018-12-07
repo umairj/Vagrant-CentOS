@@ -1,0 +1,28 @@
+- name: Installing the common packages
+  become: true
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars: 
+    packages:
+      - git
+      - vim
+      - curl
+      - zip
+      - wget
+
+- name: Make sure ~/bin exists
+  file: path=~/bin state=directory
+
+- name: Install Apache
+  become: true
+  yum:
+    name: httpd
+    state: present
+
+- name: Ensure Apache is always running
+  become: true
+  service:
+    name: httpd
+    state: started
+    enabled: true
